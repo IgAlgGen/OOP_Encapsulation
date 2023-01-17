@@ -5,23 +5,29 @@ import java.time.LocalDateTime;
 
 public class Car {
 
-    private class key {
+    public static class Key {
         /*Может быть я неправильно понял условие второго задания... Согласно подсказке "Оба параметра могут быть boolean.", соответственно какие проверки им нужны?
-        * Значения всегда будут либо true, либо false.  */
-        private final boolean remoteEngineStart = false;
-        private final boolean keylessEntry = false;
+         * Значения всегда будут либо true, либо false.  */
+        private final boolean remoteEngineStart;
+        private final boolean keylessEntry;
 
-        public key() {
+        public Key(boolean remoteEngineStart, boolean keylessEntry) {
+            this.remoteEngineStart = remoteEngineStart;
+            this.keylessEntry = keylessEntry;
         }
 
-        private boolean verificationRemoteEngineStart(boolean remoteEngineStart) {
-            String check = String.valueOf(remoteEngineStart);
-            return check.equals(null) || check.isEmpty() || check.isBlank() ? false : remoteEngineStart;
+        public boolean isRemoteEngineStart() {
+            return remoteEngineStart;
         }
 
-        private boolean verificationRemoteKeylessEntry(boolean keylessEntry) {
-            String check = String.valueOf(keylessEntry);
-            return check.equals(null) || check.isEmpty() || check.isBlank() ? false : keylessEntry;
+        public boolean isKeylessEntry() {
+            return keylessEntry;
+        }
+
+        @Override
+        public String toString() {
+            return (remoteEngineStart ? "Удаленный запуск двигателя" : "Без удаленного запуска двигателя") + ", " +
+                    (keylessEntry ? "без ключевой доступ" : "без ключевой доступ отсутствует");
         }
     }
 
@@ -36,9 +42,21 @@ public class Car {
     private String registrationNumber;
     private final int numberOfSeats;
     private String tireType;
+    private Key key;
 
 
-    public Car(String brand, String model, int year, double engineVolume, String transmission, String bodyType, int numberOfSeats, String color, String registrationNumber, String country) {
+    public Car(String brand,
+               String model,
+               int year,
+               double engineVolume,
+               String transmission,
+               String bodyType,
+               int numberOfSeats,
+               String color,
+               String registrationNumber,
+               String country,
+               Key key) {
+
         this.brand = verificationBrand(brand);
         this.model = verificationModel(model);
         this.engineVolume = setEngineVolume(engineVolume);
@@ -50,6 +68,7 @@ public class Car {
         this.numberOfSeats = verificationNumberOfSeats(numberOfSeats);
         this.registrationNumber = setRegistrationNumber(registrationNumber);
         this.tireType = setTireType();
+        setKey(key);
 
     }
 
@@ -130,6 +149,13 @@ public class Car {
         }
     }
 
+    public void setKey(Key key) {
+        if (key == null) {
+            key = new Key(false, false);
+        }
+        this.key = key;
+    }
+
     public String getBrand() {
         return brand;
     }
@@ -176,6 +202,10 @@ public class Car {
         return numberOfSeats;
     }
 
+    public Key getKey() {
+        return key;
+    }
+
     @Override
     public String toString() {
         return brand +
@@ -188,7 +218,8 @@ public class Car {
                 ", цвет кузова " + color +
                 ", количество мест " + numberOfSeats +
                 ", тип шин " + tireType +
-                ", регистрационный номер " + registrationNumber;
+                ", регистрационный номер " + registrationNumber +
+                ", " + key;
     }
 }
 
