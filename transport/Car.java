@@ -11,6 +11,9 @@ public class Car {
         private final boolean remoteEngineStart = false;
         private final boolean keylessEntry = false;
 
+        public key() {
+        }
+
         private boolean verificationRemoteEngineStart(boolean remoteEngineStart) {
             String check = String.valueOf(remoteEngineStart);
             return check.equals(null) || check.isEmpty() || check.isBlank() ? false : remoteEngineStart;
